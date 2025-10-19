@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>ConsoleMenuSelection</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Eric Gangloff</Authors>
+        <Company>-</Company>
+        <Description>A lightweight console menu selection, which can be navigated using the arrow keys [Up, Down] or [W, S]</Description>
+        <PackageTags>console;terminal;menu;cli;ui</PackageTags>
+        <RepositoryUrl>https://github.com/Ric0801/ConsoleSelectionMenu</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+
+</Project>
