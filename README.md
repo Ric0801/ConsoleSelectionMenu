@@ -6,7 +6,7 @@ the same code over and over in different projects.
 # 1.1 Using the Console Selection Menu
 - The Selection Menu can be initiated the follow way:
   - User selectedUser = new SelectionMenu<User>(users, u => u.Name).Show()
-  - string selected = new SelectionMenu<string>(listOfStrings).Show()
+  - string selected = new SelectionMenu<string>(listOfStrings, s => s).Show()
 # 1.2 Navigating the Console Selection Menu
 - The selection menu can be navigated using the following keys:
   - Arrow Up

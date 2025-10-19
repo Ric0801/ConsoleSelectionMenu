@@ -34,7 +34,7 @@ public class SelectionMenu<T> : ISelectionMenu<T>
     
     public T Show()
     {
-        Console.WriteLine($"\x1b[1m{_title}\x1b[22m");
+        Console.WriteLine($"{_title}");
         SwitchIndex();
         return _items[_index];
     }
@@ -70,8 +70,8 @@ public class SelectionMenu<T> : ISelectionMenu<T>
             
         } while (key.Key != ConsoleKey.Enter);
         
-        
-        ClearConsoleUtil.ClearRegion(top, _items.Count);
+        // Removes the title at the end
+        ClearConsoleUtil.ClearRegion(top - 1, _items.Count + 1);
     }
 
     private void RenderItem()

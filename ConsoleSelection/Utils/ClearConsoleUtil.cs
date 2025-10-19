@@ -21,10 +21,10 @@ public static class ClearConsoleUtil
         
         for (int row = 0; row < toClear; row++)
         {
-            Console.SetCursorPosition(left, row);
+            Console.SetCursorPosition(left, top + row);
             Console.Write(emptyLine);
         }
         
-        Console.SetCursorPosition(0, top);
+        Console.SetCursorPosition(left,top);
     }
 }
