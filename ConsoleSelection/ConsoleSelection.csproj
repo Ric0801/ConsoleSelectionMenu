@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>ConsoleMenuSelection</PackageId>
-        <Version>1.0.1</Version>
+        <Version>1.0.2</Version>
         <Authors>Eric Gangloff</Authors>
         <Company>-</Company>
         <Description>A lightweight console menu selection, which can be navigated using the arrow keys [Up, Down] or [W, S]</Description>
