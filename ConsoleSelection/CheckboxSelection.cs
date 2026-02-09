@@ -34,7 +34,7 @@ public class CheckboxSelection<T> : ICheckboxSelection<T>
         
         do
         {
-            ClearConsoleUtil.ClearRegion(top, _items.Count);
+            ClearConsoleUtil.ClearRegion(ref top, _items.Count);
             
             RenderItem();
             
@@ -61,7 +61,10 @@ public class CheckboxSelection<T> : ICheckboxSelection<T>
             
         } while (key.Key != ConsoleKey.Enter);
         
-        ClearConsoleUtil.ClearRegion(top - 1, _items.Count + 1);
+        //removes the title
+        int removeTitle = top - 1;
+        ClearConsoleUtil.ClearRegion(ref removeTitle, _items.Count + 1);
+        Console.WriteLine();
     }
 
     private void HandleSpaceBarPressed()

@@ -43,10 +43,10 @@ public class SelectionMenu<T> : ISelectionMenu<T>
     {
         ConsoleKeyInfo key;
         (int _, int top) = Console.GetCursorPosition();
-        
+
         do
         {
-            ClearConsoleUtil.ClearRegion(top, _items.Count);
+            ClearConsoleUtil.ClearRegion(ref top, _items.Count);
             
             RenderItem();
             
@@ -71,7 +71,9 @@ public class SelectionMenu<T> : ISelectionMenu<T>
         } while (key.Key != ConsoleKey.Enter);
         
         // Removes the title at the end
-        ClearConsoleUtil.ClearRegion(top - 1, _items.Count + 1);
+        int removeTitle = top;
+        ClearConsoleUtil.ClearRegion(ref removeTitle, _items.Count + 1);
+        Console.WriteLine();
     }
 
     private void RenderItem()

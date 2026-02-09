@@ -12,19 +12,64 @@ public static class ClearConsoleUtil
     /// <param name="toClear"></param>
     /// <param name="left"></param>
     /// <param name="width"></param>
-    public static void ClearRegion(int top = -1, int toClear = 1, int left = 0, int width = 0)
+    public static void ClearRegion(ref int top, int toClear = 1, int left = 0, int width = 0)
     {
+        EnsureBufferHeight(toClear, ref top);
+        
         if (top == -1) 
             top = Console.CursorTop;
+        
+        int bufferHeight = Console.WindowHeight;
 
+        int rowsToClear = Math.Min(toClear, bufferHeight - top);
+
+        if (rowsToClear <= 0)
+        {
+            Console.SetCursorPosition(left, Math.Min(top, bufferHeight - 1));
+            return;
+        }
+        
         string emptyLine = new string(' ', width == 0 ? Console.WindowWidth : width);
         
         for (int row = 0; row < toClear; row++)
         {
-            Console.SetCursorPosition(left, top + row);
-            Console.Write(emptyLine);
+            try
+            {
+                Console.SetCursorPosition(left, top + row);
+                Console.Write(emptyLine);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("Argument out of range");
+                Console.ResetColor();
+            }
         }
         
-        Console.SetCursorPosition(left,top);
+        Console.SetCursorPosition(left,Math.Min(top, bufferHeight - 1));
+    }
+
+    private static void EnsureBufferHeight(int rowsNeeded, ref int top)
+    {
+        int bufferHeight = Console.BufferHeight;
+
+        if (top + rowsNeeded < bufferHeight) return;
+        
+        int linesToAdd = (top + rowsNeeded + 1) - bufferHeight;
+        
+        int safePosition = Math.Max(0, bufferHeight - 1);
+        
+        Console.SetCursorPosition(0, safePosition);
+        
+        for (int i = 0; i < linesToAdd; i++)
+        {
+            Console.WriteLine();
+        }
+        
+        if (top >= safePosition)
+        {
+            top -= linesToAdd;
+            top = Math.Max(0, top);
+        }
     }
 }
