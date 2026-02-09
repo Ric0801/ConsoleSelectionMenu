@@ -71,8 +71,9 @@ public class SelectionMenu<T> : ISelectionMenu<T>
         } while (key.Key != ConsoleKey.Enter);
         
         // Removes the title at the end
-        int removeTitle = top;
+        int removeTitle = top - 1;
         ClearConsoleUtil.ClearRegion(ref removeTitle, _items.Count + 1);
+        Console.WriteLine();
         Console.WriteLine();
     }
 
