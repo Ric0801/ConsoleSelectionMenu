@@ -1,4 +1,6 @@
 using ConsoleSelection.Interfaces;
+using ConsoleSelection.Models;
+using ConsoleSelection.Ui;
 using ConsoleSelection.Utils;
 
 namespace ConsoleSelection;
@@ -8,6 +10,9 @@ public class CheckboxSelection<T> : ICheckboxSelection<T>
     private readonly IReadOnlyList<T> _items;
     private readonly List<T> _selectedItems = new List<T>();
     private readonly Func<T, string>? _displaySelector;
+    private readonly string _resetStyle = string.Empty;
+    private readonly string _styling = string.Empty;
+    private readonly string _title = "Checkbox selection [Press SpaceBar to select]-[Press Enter to finish Selection]";
     private int _index;
 
     public CheckboxSelection(IReadOnlyList<T> items, Func<T, string>? displaySelector)
@@ -20,9 +25,24 @@ public class CheckboxSelection<T> : ICheckboxSelection<T>
         _displaySelector = displaySelector;
     }
     
+    public CheckboxSelection(SelectionOptions<T> options)
+    {
+        _items = options.Items.ToList();
+        var style = new SelectionStyle();
+        
+        if (!string.IsNullOrEmpty(options.Title))
+            _title = options.Title;
+        
+        _displaySelector = options.DisplaySelector;
+        _styling = style[options.Style];
+        _resetStyle = style.Reset;
+        _index = 0;
+    }
+    
     public List<T> Show()
     {
-        Console.WriteLine("Checkbox selection [Press SpaceBar to select]-[Press Enter to finish Selection]");
+        if (!string.IsNullOrEmpty(_title))
+            Console.WriteLine(_title);
         SwitchIndex();
         return _selectedItems;
     }
@@ -97,7 +117,7 @@ public class CheckboxSelection<T> : ICheckboxSelection<T>
         {
             var item = GetDisplayText(_items[i]);
             
-            Console.WriteLine(i == _index ? $"{MarkCheckbox(_items[i], i)}  \x1b[4m{item}\x1b[24m" : $"{MarkCheckbox(_items[i], i)} {item}");
+            Console.WriteLine(i == _index ? $"{_styling}{MarkCheckbox(_items[i], i)}{item}{_resetStyle}" : $"  {MarkCheckbox(_items[i], i)}{item}");
         }
     }
 
@@ -113,8 +133,8 @@ public class CheckboxSelection<T> : ICheckboxSelection<T>
             break;
         }
         
-        if (selectedItem) return $"\x1b[7m[ ]\x1b[27m";
-        return "[ ]";
+        if (selectedItem) return "# ";
+        return "";
     }
 
     private string GetDisplayText(T item) => _displaySelector?.Invoke(item) ?? item.ToString();

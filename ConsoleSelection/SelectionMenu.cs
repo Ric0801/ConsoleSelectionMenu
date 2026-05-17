@@ -1,4 +1,7 @@
-﻿using ConsoleSelection.Interfaces;
+﻿using ConsoleSelection.Enums;
+using ConsoleSelection.Interfaces;
+using ConsoleSelection.Models;
+using ConsoleSelection.Ui;
 using ConsoleSelection.Utils;
 
 namespace ConsoleSelection;
@@ -6,8 +9,10 @@ namespace ConsoleSelection;
 public class SelectionMenu<T> : ISelectionMenu<T>
 {
     private readonly IReadOnlyList<T> _items;
-    private readonly string _title;
+    private readonly string? _title;
     private readonly Func<T, string>? _displaySelector;
+    private readonly string _resetStyle = string.Empty;
+    private readonly string _styling = string.Empty;
     private int _index;
 
     /// <summary>
@@ -31,10 +36,25 @@ public class SelectionMenu<T> : ISelectionMenu<T>
         
         Console.TreatControlCAsInput = true;
     }
+
+    public SelectionMenu(SelectionOptions<T> options)
+    {
+        _items = options.Items.ToList();
+        var style = new SelectionStyle();
+        
+        if (!string.IsNullOrEmpty(options.Title))
+            _title = options.Title;
+        
+        _displaySelector = options.DisplaySelector;
+        _styling = style[options.Style];
+        _resetStyle = style.Reset;
+        _index = 0;
+    }
     
     public T Show()
     {
-        Console.WriteLine($"{_title}");
+        if (!string.IsNullOrEmpty(_title))
+            Console.WriteLine($"{_title}");
         SwitchIndex();
         return _items[_index];
     }
@@ -83,7 +103,7 @@ public class SelectionMenu<T> : ISelectionMenu<T>
         {
             var item = GetDisplayText(_items[i]);
             
-            Console.WriteLine(i == _index ? $"[>] \x1b[4m{item}\x1b[24m" : $"[ ] {item}");
+            Console.WriteLine(i == _index ? $"{_styling}{item}{_resetStyle}" : $"  {item}");
         }
     }
 
